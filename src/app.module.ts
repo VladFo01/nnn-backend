@@ -11,6 +11,14 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 
 import config from '../config/config';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
+
+const defaultConfig: TypeOrmModuleOptions = {
+  ...config().postgres,
+  synchronize: true,
+  // models
+  entities: [],
+};
 
 @Module({
   imports: [
@@ -22,6 +30,7 @@ import config from '../config/config';
       cache: true,
       load: [config],
     }),
+    TypeOrmModule.forRoot(defaultConfig),
   ],
   controllers: [AppController],
   providers: [
