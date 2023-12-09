@@ -1,5 +1,7 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+interface NodeConfig {
+  port: string;
+}
 
-export class ConfigDTO {
-  db: TypeOrmModuleOptions;
+export interface ConfigDTO {
+  node: NodeConfig;
 }

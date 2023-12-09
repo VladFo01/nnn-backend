@@ -8,13 +8,19 @@ import { LoggingInterceptor } from './utils/interceptors/logging.interceptor';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './utils/services/winston/winston';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from './modules/auth/auth.module';
+
+import config from '../config/config';
 
 @Module({
   imports: [
+    AuthModule,
     FeedbackModule,
     WinstonModule.forRoot(winstonConfig()),
     ConfigModule.forRoot({
-      envFilePath: `env/.${process.env.NODE_ENV}.env`,
+      isGlobal: true,
+      cache: true,
+      load: [config],
     }),
   ],
   controllers: [AppController],
