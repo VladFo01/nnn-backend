@@ -6,8 +6,8 @@ dotenv.config({ path: `env/.${process.env.NODE_ENV}.env` });
 const getConfig: () => ConfigDTO = () => ({
   node: {
     port: process.env.PORT,
-    nodeEnv: process.env.NODE_ENV,
     jwtSecretKey: process.env.JWT_SECRET_KEY,
+    rustServiceUrl: process.env.RUST_SERVICE_URL,
   },
   postgres: {
     dialect: 'postgres',
