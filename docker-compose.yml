@@ -8,6 +8,13 @@ services:
       - "3000:3000"
     depends_on:
       - mongo
+      - rust-backend
+  rust-backend:
+    build:
+      context: /submodules/nnn-rust-backend/.
+      dockerfile: "Dockerfile"
+    ports:
+      - "8080:8080"
   mongo:
     image: mongo:latest
     restart: always
