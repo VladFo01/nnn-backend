@@ -8,6 +8,7 @@
 dist
 node_modules
 coverage
+submodules 
 
 # Environment (contains sensitive data)
 .env

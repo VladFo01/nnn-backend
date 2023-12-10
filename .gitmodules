@@ -1,0 +1,3 @@
+[submodule "submodules/nnn-rust-backend"]
+	path = submodules/nnn-rust-backend
+	url = https://github.com/HoldinSky/NomNomNavigator.git
