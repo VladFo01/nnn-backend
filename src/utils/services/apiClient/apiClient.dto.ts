@@ -14,7 +14,7 @@ export interface RequestOptions<RequestData, RequestParams> {
 
 export interface ResponseError {
   data: any;
-  status: number | unknown;
+  status: number | any;
 }
 
 export interface ResponseData<ResponseObject> {
