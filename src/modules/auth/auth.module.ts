@@ -27,6 +27,6 @@ const jwtConfig: JwtModuleOptions = {
     JwtModule.register(jwtConfig),
     ConfigModule,
   ],
-  exports: [JwtModule, AuthGuard, RolesGuard],
+  exports: [JwtModule, AuthGuard, RolesGuard, WorkerModule],
 })
 export class AuthModule {}
