@@ -18,6 +18,7 @@ import config from '../config/config';
 import { Worker } from './modules/worker/worker.model';
 import { WorkerAuth } from './modules/workerAuth/workerAuth.model';
 import { WorkerRole } from './modules/workerRole/workerRole.model';
+import { WorkerModule } from './modules/worker/worker.module';
 
 const defaultConfig: SequelizeModuleOptions = {
   ...config().postgres,
@@ -38,6 +39,7 @@ const defaultConfig: SequelizeModuleOptions = {
       load: [config],
     }),
     SequelizeModule.forRoot(defaultConfig),
+    WorkerModule,
   ],
   controllers: [AppController],
   providers: [

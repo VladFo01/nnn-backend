@@ -44,7 +44,7 @@ export class Worker extends Model<Worker, WorkerCreationAttr> {
   })
   created_at: Date;
 
-  @Column({ type: DataType.DATE, allowNull: false })
+  @Column({ type: DataType.DATE, allowNull: true })
   deleted_at: Date;
 
   @BelongsTo(() => WorkerRole)

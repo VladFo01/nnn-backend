@@ -15,7 +15,7 @@ interface WorkerAuthCreationAttr {
   worker_id: number;
 }
 
-@Table({ tableName: 'worker', createdAt: false, updatedAt: false })
+@Table({ tableName: 'worker_auth', createdAt: false, updatedAt: false })
 export class WorkerAuth extends Model<WorkerAuth, WorkerAuthCreationAttr> {
   @Column({
     type: DataType.INTEGER,
@@ -45,7 +45,7 @@ export class WorkerAuth extends Model<WorkerAuth, WorkerAuthCreationAttr> {
   })
   created_at: Date;
 
-  @Column({ type: DataType.DATE, allowNull: false })
+  @Column({ type: DataType.DATE, allowNull: true })
   deleted_at: Date;
 
   @BelongsTo(() => Worker)

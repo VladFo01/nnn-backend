@@ -28,7 +28,7 @@ export class WorkerRole extends Model<WorkerRole> {
   })
   created_at: Date;
 
-  @Column({ type: DataType.DATE, allowNull: false })
+  @Column({ type: DataType.DATE, allowNull: true })
   deleted_at: Date;
 
   @HasMany(() => Worker)
