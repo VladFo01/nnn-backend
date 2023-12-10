@@ -8,16 +8,23 @@ import { LoggingInterceptor } from './utils/interceptors/logging.interceptor';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './utils/services/winston/winston';
 import { ConfigModule } from '@nestjs/config';
+import { SequelizeModule, SequelizeModuleOptions } from '@nestjs/sequelize';
+
 import { AuthModule } from './modules/auth/auth.module';
 
 import config from '../config/config';
-import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-const defaultConfig: TypeOrmModuleOptions = {
+// models
+import { Worker } from './modules/worker/worker.model';
+import { WorkerAuth } from './modules/workerAuth/workerAuth.model';
+import { WorkerRole } from './modules/workerRole/workerRole.model';
+
+const defaultConfig: SequelizeModuleOptions = {
   ...config().postgres,
   synchronize: true,
+  autoLoadModels: true,
   // models
-  entities: [],
+  models: [Worker, WorkerAuth, WorkerRole],
 };
 
 @Module({
@@ -30,7 +37,7 @@ const defaultConfig: TypeOrmModuleOptions = {
       cache: true,
       load: [config],
     }),
-    TypeOrmModule.forRoot(defaultConfig),
+    SequelizeModule.forRoot(defaultConfig),
   ],
   controllers: [AppController],
   providers: [

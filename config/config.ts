@@ -9,13 +9,17 @@ const getConfig: () => ConfigDTO = () => ({
     nodeEnv: process.env.NODE_ENV,
   },
   postgres: {
-    type: 'postgres',
+    dialect: 'postgres',
     port: Number(process.env.POSTGRES_PORT),
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD,
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
     url: process.env.POSTGRES_URL,
+    define: {
+      timestamps: false,
+    },
+    logging: false,
   },
 });
 

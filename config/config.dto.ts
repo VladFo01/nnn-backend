@@ -1,4 +1,4 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { SequelizeModuleOptions } from '@nestjs/sequelize';
 
 interface NodeConfig {
   port: string;
@@ -6,5 +6,5 @@ interface NodeConfig {
 
 export default interface ConfigDTO {
   node: NodeConfig;
-  postgres: TypeOrmModuleOptions;
+  postgres: SequelizeModuleOptions;
 }
