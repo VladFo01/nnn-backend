@@ -20,6 +20,7 @@ import { Worker } from './modules/worker/worker.model';
 import { WorkerAuth } from './modules/workerAuth/workerAuth.model';
 import { WorkerRole } from './modules/workerRole/workerRole.model';
 import { WorkerModule } from './modules/worker/worker.module';
+import { MenuModule } from './modules/menu/menu.module';
 
 const defaultConfig: SequelizeModuleOptions = {
   ...config().postgres,
@@ -44,6 +45,7 @@ const mongoOptions: MongooseModuleOptions = config().mongo.options;
     }),
     SequelizeModule.forRoot(defaultConfig),
     WorkerModule,
+    MenuModule,
     MongooseModule.forRoot(mongoUri, mongoOptions),
   ],
   controllers: [AppController],
