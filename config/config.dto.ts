@@ -4,6 +4,7 @@ import { MongooseModuleOptions } from '@nestjs/mongoose';
 interface NodeConfig {
   port: string;
   jwtSecretKey: string;
+  rustServiceUrl: string;
 }
 
 interface MongoConfig {
