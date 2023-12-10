@@ -17,6 +17,13 @@ const getConfig: () => ConfigDTO = () => ({
     host: process.env.POSTGRES_HOST,
     url: process.env.POSTGRES_URL,
   },
+  mongo: {
+    uri:
+      parseInt(process.env.MONGO_AUTH) == 0
+        ? `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`
+        : `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`,
+    options: {},
+  },
 });
 
 export default getConfig;
