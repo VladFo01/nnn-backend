@@ -11,7 +11,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule, SequelizeModuleOptions } from '@nestjs/sequelize';
 
 import { AuthModule } from './modules/auth/auth.module';
-import { MongooseModule } from '@nestjs/mongoose';
+import { MongooseModule, MongooseModuleOptions } from '@nestjs/mongoose';
 
 import config from '../config/config';
 
@@ -28,6 +28,10 @@ const defaultConfig: SequelizeModuleOptions = {
   // models
   models: [Worker, WorkerAuth, WorkerRole],
 };
+
+const mongoUri: string = config().mongo.uri;
+const mongoOptions: MongooseModuleOptions = config().mongo.options;
+
 @Module({
   imports: [
     FeedbackModule,
@@ -40,7 +44,7 @@ const defaultConfig: SequelizeModuleOptions = {
     }),
     SequelizeModule.forRoot(defaultConfig),
     WorkerModule,
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/test'),
+    MongooseModule.forRoot(mongoUri, mongoOptions),
   ],
   controllers: [AppController],
   providers: [
