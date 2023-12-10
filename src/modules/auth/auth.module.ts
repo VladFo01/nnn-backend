@@ -10,6 +10,7 @@ import { WorkerAuthModule } from '../workerAuth/workerAuth.module';
 import { ConfigModule } from '@nestjs/config';
 import { AuthGuard } from './auth.guard';
 import { RolesGuard } from './roles.guard';
+import { WorkerService } from '../worker/worker.service';
 
 const jwtConfig: JwtModuleOptions = {
   secret: config().node.jwtSecretKey,
@@ -27,6 +28,6 @@ const jwtConfig: JwtModuleOptions = {
     JwtModule.register(jwtConfig),
     ConfigModule,
   ],
-  exports: [JwtModule, AuthGuard, RolesGuard],
+  exports: [JwtModule, AuthGuard, RolesGuard, WorkerModule],
 })
 export class AuthModule {}
