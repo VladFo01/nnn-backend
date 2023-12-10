@@ -6,7 +6,7 @@ import {
   DeleteWorkerAuthDto,
   UpdateWorkerAuthDto,
 } from './dto/workerAuth.dto';
-import { Transaction } from 'sequelize';
+import { Transaction, WhereOptions } from 'sequelize';
 
 @Injectable()
 export class WorkerAuthService {
@@ -14,8 +14,8 @@ export class WorkerAuthService {
     @InjectModel(WorkerAuth) private workerAuthRepository: typeof WorkerAuth,
   ) {}
 
-  async createWorkerAuth(dto: CreateWorkerAuthDto) {
-    return this.workerAuthRepository.create(dto);
+  async createWorkerAuth(dto: CreateWorkerAuthDto, transaction?: Transaction) {
+    return this.workerAuthRepository.create(dto, { transaction });
   }
 
   async getWorkerAuthByWorkerId(workerId: number) {
@@ -27,11 +27,18 @@ export class WorkerAuthService {
     });
   }
 
+  async getWorkerAuthWhere(where: WhereOptions<WorkerAuth>) {
+    return this.workerAuthRepository.findOne({
+      where,
+    });
+  }
+
   async update(dto: UpdateWorkerAuthDto, transaction?: Transaction) {
     return this.workerAuthRepository.update(
       {
         email: dto.email,
         password: dto.password,
+        token: dto.token,
       },
       {
         where: { worker_id: dto.worker_id, deleted_at: null },

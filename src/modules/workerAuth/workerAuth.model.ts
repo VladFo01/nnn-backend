@@ -8,6 +8,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { Worker } from '../worker/worker.model';
+import { ApiProperty } from '@nestjs/swagger';
 
 interface WorkerAuthCreationAttr {
   email: string;
@@ -17,6 +18,7 @@ interface WorkerAuthCreationAttr {
 
 @Table({ tableName: 'worker_auth', createdAt: false, updatedAt: false })
 export class WorkerAuth extends Model<WorkerAuth, WorkerAuthCreationAttr> {
+  @ApiProperty({ example: 3 })
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -25,19 +27,24 @@ export class WorkerAuth extends Model<WorkerAuth, WorkerAuthCreationAttr> {
   })
   id: number;
 
+  @ApiProperty({ example: 'example@gmail.com' })
   @Column({ type: DataType.STRING, unique: true, allowNull: false })
   email: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @ApiProperty({ example: '12345' })
+  @Column({ type: DataType.TEXT, allowNull: false })
   password: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
+  @ApiProperty({ example: 'tokenblablasdfsfsdffds' })
+  @Column({ type: DataType.TEXT, allowNull: true })
   token: string;
 
+  @ApiProperty({ example: 6 })
   @ForeignKey(() => Worker)
   @Column({ type: DataType.INTEGER, allowNull: false })
   worker_id: number;
 
+  @ApiProperty({ example: '2023-12-10T11:46:05.416Z' })
   @Column({
     type: DataType.DATE,
     allowNull: false,
@@ -45,6 +52,7 @@ export class WorkerAuth extends Model<WorkerAuth, WorkerAuthCreationAttr> {
   })
   created_at: Date;
 
+  @ApiProperty({ example: '2023-12-10T11:46:05.416Z' })
   @Column({ type: DataType.DATE, allowNull: true })
   deleted_at: Date;
 

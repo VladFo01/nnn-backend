@@ -8,6 +8,9 @@ import {
 } from './dto/worker.dto';
 import { WorkerAuthService } from '../workerAuth/workerAuth.service';
 import { Sequelize } from 'sequelize-typescript';
+import * as bcrypt from 'bcryptjs';
+import { WhereOptions } from 'sequelize';
+import { WorkerAuth } from '../workerAuth/workerAuth.model';
 
 @Injectable()
 export class WorkerService {
@@ -18,21 +21,31 @@ export class WorkerService {
   ) {}
 
   async createWorker(dto: CreateWorkerDto) {
-    const worker = await this.workerRepository.create({
-      first_name: dto.firstName,
-      last_name: dto.lastName,
-      role_id: dto.roleId,
-    });
+    const t = await this.sequelize.transaction();
 
-    await this.workerAuthService.createWorkerAuth({
-      worker_id: worker.id,
-      email: dto.email,
-      password: dto.password,
-    });
+    try {
+      const worker = await this.workerRepository.create({
+        first_name: dto.firstName,
+        last_name: dto.lastName,
+        role_id: dto.roleId,
+      });
 
-    const workerWithAuth = await this.getWorkerWithAuthById(worker.id);
+      const hashedPassword = await bcrypt.hash(dto.password, 5);
 
-    return workerWithAuth;
+      await this.workerAuthService.createWorkerAuth({
+        worker_id: worker.id,
+        email: dto.email.toLowerCase(),
+        password: hashedPassword,
+      });
+
+      const workerWithAuth = await this.getWorkerWithAuthById(worker.id);
+
+      await t.commit();
+      return workerWithAuth;
+    } catch (err) {
+      await t.rollback();
+      throw err;
+    }
   }
 
   async getWorkerWithAuthById(workerId: number) {
@@ -46,6 +59,29 @@ export class WorkerService {
           association: 'workerAuth',
           required: true,
           where: { deleted_at: null },
+          attributes: ['email', 'password', 'token'],
+        },
+        {
+          association: 'role',
+          required: true,
+          where: { deleted_at: null },
+          attributes: ['title'],
+        },
+      ],
+    });
+  }
+
+  async getWorkerWithAuthWhere(
+    workerWhere: WhereOptions<Worker>,
+    workerAuthWhere: WhereOptions<WorkerAuth>,
+  ) {
+    return this.workerRepository.findOne({
+      where: workerWhere,
+      include: [
+        {
+          association: 'workerAuth',
+          required: true,
+          where: workerAuthWhere,
           attributes: ['email', 'password', 'token'],
         },
         {

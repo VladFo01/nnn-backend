@@ -30,7 +30,7 @@ const defaultConfig: SequelizeModuleOptions = {
 };
 @Module({
   imports: [
-    FeedbackModule,
+    // FeedbackModule,
     AuthModule,
     WinstonModule.forRoot(winstonConfig()),
     ConfigModule.forRoot({
@@ -40,7 +40,7 @@ const defaultConfig: SequelizeModuleOptions = {
     }),
     SequelizeModule.forRoot(defaultConfig),
     WorkerModule,
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/test'),
+    // MongooseModule.forRoot('mongodb://127.0.0.1:27017/test'),
   ],
   controllers: [AppController],
   providers: [

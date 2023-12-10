@@ -7,6 +7,7 @@ const getConfig: () => ConfigDTO = () => ({
   node: {
     port: process.env.PORT,
     nodeEnv: process.env.NODE_ENV,
+    jwtSecretKey: process.env.JWT_SECRET_KEY,
   },
   postgres: {
     dialect: 'postgres',
