@@ -9,6 +9,7 @@ import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from './utils/services/winston/winston';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
+import { MongooseModule } from '@nestjs/mongoose';
 
 import config from '../config/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
@@ -19,11 +20,10 @@ const defaultConfig: TypeOrmModuleOptions = {
   // models
   entities: [],
 };
-
 @Module({
   imports: [
-    AuthModule,
     FeedbackModule,
+    AuthModule,
     WinstonModule.forRoot(winstonConfig()),
     ConfigModule.forRoot({
       isGlobal: true,
@@ -31,6 +31,7 @@ const defaultConfig: TypeOrmModuleOptions = {
       load: [config],
     }),
     TypeOrmModule.forRoot(defaultConfig),
+    MongooseModule.forRoot('mongodb://127.0.0.1:27017/test'),
   ],
   controllers: [AppController],
   providers: [
