@@ -1,8 +1,9 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { SequelizeModuleOptions } from '@nestjs/sequelize';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
 
 interface NodeConfig {
   port: string;
+  jwtSecretKey: string;
 }
 
 interface MongoConfig {
@@ -12,6 +13,6 @@ interface MongoConfig {
 
 export default interface ConfigDTO {
   node: NodeConfig;
-  postgres: TypeOrmModuleOptions;
+  postgres: SequelizeModuleOptions;
   mongo: MongoConfig;
 }
