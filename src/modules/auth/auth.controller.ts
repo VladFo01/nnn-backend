@@ -1,7 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
+import { AuthGuard } from './auth.guard';
+import { WorkerObject } from 'src/decorators/worker.decorator';
+import { Worker } from '../worker/worker.model';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -15,10 +18,11 @@ export class AuthController {
     return this.authService.login(loginDto);
   }
 
-  // @ApiOperation({ summary: 'Logout' })
-  // @ApiResponse({ status: 200 })
-  // @Post('/logout')
-  // async logout() {
-  //   return this.authService.logout();
-  // }
+  @ApiOperation({ summary: 'Logout' })
+  @ApiResponse({ status: 200 })
+  @UseGuards(AuthGuard)
+  @Post('/logout')
+  async logout(@WorkerObject() worker: Worker) {
+    return this.authService.logout({ workerId: worker.id });
+  }
 }
