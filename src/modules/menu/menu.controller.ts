@@ -115,7 +115,7 @@ export class MenuController {
   @Delete(':date')
   async deleteMenu(@Param('date') date: string) {
     const result = await axiosRequest({
-      url: `/menu/set-active/${date}`,
+      url: `/menu/${date}`,
       method: RequestMethods.DELETE,
     });
 
