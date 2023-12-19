@@ -5,11 +5,16 @@ import {
   Post,
   Put,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { number } from 'joi';
 import axiosRequest from 'src/utils/services/apiClient/apiClient';
 import { RequestMethods } from 'src/utils/services/apiClient/apiClient.dto';
+import { Roles } from '../auth/roles.decorator';
+import { ROLES } from 'src/utils/constants';
+import { AuthGuard } from '../auth/auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Order')
 @Controller('order')
@@ -51,6 +56,8 @@ export class OrderController {
 
   @ApiOperation({ summary: 'Confirm order' })
   @ApiResponse({ status: 200 })
+  @Roles(ROLES.ADMIN, ROLES.WAITER)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('/:orderId/confirm')
   async setOrderConfirmed(@Param('orderId') orderId: number) {
     const result = await axiosRequest({
@@ -85,7 +92,7 @@ export class OrderController {
     summary:
       'Subtracts count of dish of specified id. If there was only one — removes it from the order.',
   })
-  @ApiResponse({ status: 200, type: number })
+  @ApiResponse({ status: 200, type: Number })
   @Put('/:orderId/decrement/:dishId')
   async decrementDishFromOrder(
     @Param('orderId') orderId: number,
@@ -106,7 +113,7 @@ export class OrderController {
   @ApiOperation({
     summary: 'Remove dish from order.',
   })
-  @ApiResponse({ status: 200, type: number })
+  @ApiResponse({ status: 200, type: Number })
   @Delete('/:orderId/:dishId')
   async removeDishFromOrder(
     @Param('orderId') orderId: number,

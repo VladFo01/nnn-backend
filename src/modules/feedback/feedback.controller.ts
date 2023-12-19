@@ -25,6 +25,7 @@ export class FeedbackController {
   @ApiResponse({ status: 200 })
   @Post()
   async create(@Body() createFeedbackDto: CreateFeedbackDto) {
+    console.log(createFeedbackDto);
     await this.feedbackService.create(createFeedbackDto);
   }
 

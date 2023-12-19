@@ -45,7 +45,14 @@ export class AuthService {
       token,
     });
 
-    return { token };
+    const updatedWorker = await this.workerService.getWorkerWithAuthById(
+      worker.id,
+    );
+
+    return {
+      worker: updatedWorker,
+      token,
+    };
   }
 
   private generateToken(worker: Worker) {

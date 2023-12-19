@@ -8,11 +8,16 @@ import {
   Param,
   Post,
   Put,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import axiosRequest from 'src/utils/services/apiClient/apiClient';
 import { RequestMethods } from 'src/utils/services/apiClient/apiClient.dto';
 import { CreateMenuDto, Dish, RedisDish } from './dto/menu.dto';
+import { Roles } from '../auth/roles.decorator';
+import { ROLES } from 'src/utils/constants';
+import { AuthGuard } from '../auth/auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Menu')
 @Controller('menu')
@@ -35,6 +40,8 @@ export class MenuController {
 
   @ApiOperation({ summary: 'Get all dishes' })
   @ApiResponse({ status: 200, type: [Dish] })
+  @Roles(ROLES.ADMIN, ROLES.CHEF)
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('/all-dishes')
   async getDish() {
     const result = await axiosRequest({
@@ -73,6 +80,8 @@ export class MenuController {
 
   @ApiOperation({ summary: 'Create new menu' })
   @ApiResponse({ status: 200, type: String })
+  @Roles(ROLES.ADMIN, ROLES.CHEF)
+  @UseGuards(AuthGuard, RolesGuard)
   @Post('/create-new')
   async createMenu(@Body() dto: CreateMenuDto) {
     const result = await axiosRequest({
@@ -91,8 +100,10 @@ export class MenuController {
     return result.response;
   }
 
-  @ApiOperation({ summary: 'Create new menu' })
+  @ApiOperation({ summary: 'Set active menu by date' })
   @ApiResponse({ status: 200 })
+  @Roles(ROLES.ADMIN, ROLES.CHEF)
+  @UseGuards(AuthGuard, RolesGuard)
   @Put('/set-active/:date')
   async setActiveMenu(@Param('date') date: string) {
     const result = await axiosRequest({
@@ -110,8 +121,10 @@ export class MenuController {
     return result.response;
   }
 
-  @ApiOperation({ summary: 'Create new menu' })
+  @ApiOperation({ summary: 'Delete menu for specific date' })
   @ApiResponse({ status: 200 })
+  @Roles(ROLES.ADMIN, ROLES.CHEF)
+  @UseGuards(AuthGuard, RolesGuard)
   @Delete(':date')
   async deleteMenu(@Param('date') date: string) {
     const result = await axiosRequest({
