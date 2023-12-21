@@ -24,8 +24,6 @@ export class OrderController {
       method: RequestMethods.POST,
     });
 
-    console.log(result.error);
-
     if (result.error) {
       throw new InternalServerErrorException(result.error.data.message);
     }
