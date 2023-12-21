@@ -2,6 +2,7 @@ import {
   Controller,
   Param,
   InternalServerErrorException,
+  Get,
   Post,
   Put,
   Delete,
@@ -22,6 +23,8 @@ export class OrderController {
       url: `/order/create-for-table/${id}`,
       method: RequestMethods.POST,
     });
+
+    console.log(result.error);
 
     if (result.error) {
       throw new InternalServerErrorException(result.error.data.message);
@@ -94,6 +97,24 @@ export class OrderController {
     const result = await axiosRequest({
       url: `/order/${orderId}/decrement/${dishId}`,
       method: RequestMethods.PUT,
+    });
+
+    if (result.error) {
+      throw new InternalServerErrorException(result.error.data.message);
+    }
+
+    return result.response;
+  }
+
+  @ApiOperation({
+    summary: 'Add dish to order.',
+  })
+  @ApiResponse({ status: 200, type: Number })
+  @Get('/get/:orderId/')
+  async addDishFromOrder(@Param('orderId') orderId: number) {
+    const result = await axiosRequest({
+      url: `/order/get/${orderId}`,
+      method: RequestMethods.GET,
     });
 
     if (result.error) {
