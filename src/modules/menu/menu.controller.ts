@@ -32,7 +32,7 @@ export class MenuController {
     });
 
     if (result.error) {
-      throw new InternalServerErrorException(result.error.data.message);
+      throw new InternalServerErrorException(result.error.data);
     }
 
     return result.response;
@@ -50,10 +50,7 @@ export class MenuController {
     });
 
     if (result.error) {
-      throw new HttpException(
-        result.error.data.message,
-        result.error.status ?? 500,
-      );
+      throw new HttpException(result.error.data, result.error.status ?? 500);
     }
 
     return result.response;
@@ -69,10 +66,7 @@ export class MenuController {
     });
 
     if (result.error) {
-      throw new HttpException(
-        result.error.data.message,
-        result.error.status ?? 500,
-      );
+      throw new HttpException(result.error.data, result.error.status ?? 500);
     }
 
     return result.response;
@@ -91,10 +85,7 @@ export class MenuController {
     });
 
     if (result.error) {
-      throw new HttpException(
-        result.error.data.message,
-        result.error.status ?? 500,
-      );
+      throw new HttpException(result.error.data, result.error.status ?? 500);
     }
 
     return result.response;
@@ -112,10 +103,7 @@ export class MenuController {
     });
 
     if (result.error) {
-      throw new HttpException(
-        result.error.data.message,
-        result.error.status ?? 500,
-      );
+      throw new HttpException(result.error.data, result.error.status ?? 500);
     }
 
     return result.response;
@@ -133,10 +121,7 @@ export class MenuController {
     });
 
     if (result.error) {
-      throw new HttpException(
-        result.error.data.message,
-        result.error.status ?? 500,
-      );
+      throw new HttpException(result.error.data, result.error.status ?? 500);
     }
 
     return result.response;

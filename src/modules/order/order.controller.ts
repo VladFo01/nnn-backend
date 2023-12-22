@@ -16,10 +16,15 @@ import { Roles } from '../auth/roles.decorator';
 import { ROLES } from 'src/utils/constants';
 import { AuthGuard } from '../auth/auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
+import { WorkerObject } from 'src/decorators/worker.decorator';
+import { OrderService } from './order.service';
+import { Worker } from '../worker/worker.model';
 
 @ApiTags('Order')
 @Controller('order')
 export class OrderController {
+  constructor(private readonly orderService: OrderService) {}
+
   @ApiOperation({ summary: 'Creates order' })
   @ApiResponse({ status: 200, type: number })
   @Post('/create-for-table/:id')
@@ -30,7 +35,7 @@ export class OrderController {
     });
 
     if (result.error) {
-      throw new InternalServerErrorException(result.error.data.message);
+      throw new InternalServerErrorException(result.error.data);
     }
 
     return result.response;
@@ -49,7 +54,7 @@ export class OrderController {
     });
 
     if (result.error) {
-      throw new InternalServerErrorException(result.error.data.message);
+      throw new InternalServerErrorException(result.error.data);
     }
 
     return result.response;
@@ -57,7 +62,7 @@ export class OrderController {
 
   @ApiOperation({ summary: 'Confirm order' })
   @ApiResponse({ status: 200 })
-  @Roles(ROLES.ADMIN, ROLES.WAITER)
+  @Roles(ROLES.WAITER)
   @UseGuards(AuthGuard, RolesGuard)
   @Post('/:orderId/confirm')
   async setOrderConfirmed(@Param('orderId') orderId: number) {
@@ -67,7 +72,25 @@ export class OrderController {
     });
 
     if (result.error) {
-      throw new InternalServerErrorException(result.error.data.message);
+      throw new InternalServerErrorException(result.error.data);
+    }
+
+    return result.response;
+  }
+
+  @ApiOperation({ summary: 'Set order cooked' })
+  @ApiResponse({ status: 200 })
+  @Roles(ROLES.CHEF)
+  @UseGuards(AuthGuard, RolesGuard)
+  @Post('/:orderId/mark-cooked')
+  async setOrderCooked(@Param('orderId') orderId: number) {
+    const result = await axiosRequest({
+      url: `/order/${orderId}/mark-cooked`,
+      method: RequestMethods.POST,
+    });
+
+    if (result.error) {
+      throw new InternalServerErrorException(result.error.data);
     }
 
     return result.response;
@@ -83,7 +106,7 @@ export class OrderController {
     });
 
     if (result.error) {
-      throw new InternalServerErrorException(result.error.data.message);
+      throw new InternalServerErrorException(result.error.data);
     }
 
     return result.response;
@@ -105,7 +128,7 @@ export class OrderController {
     });
 
     if (result.error) {
-      throw new InternalServerErrorException(result.error.data.message);
+      throw new InternalServerErrorException(result.error.data);
     }
 
     return result.response;
@@ -123,10 +146,38 @@ export class OrderController {
     });
 
     if (result.error) {
-      throw new InternalServerErrorException(result.error.data.message);
+      throw new InternalServerErrorException(result.error.data);
     }
 
     return result.response;
+  }
+
+  @ApiOperation({
+    summary: 'Get all dishes.',
+  })
+  @ApiResponse({ status: 200, type: Number })
+  @UseGuards(AuthGuard)
+  @Get('/all')
+  async getAllOrders(@WorkerObject() worker: Worker) {
+    const result = await axiosRequest<any, any, Array<any>>({
+      url: `/order/all`,
+      method: RequestMethods.GET,
+    });
+
+    if (result.error) {
+      throw new InternalServerErrorException(result.error.data);
+    }
+
+    const transfromedOrders = this.orderService.transfromOrders(
+      result.response,
+    );
+
+    const filteredOrders = this.orderService.filterOrdersByRoles(
+      transfromedOrders,
+      worker.role.title,
+    );
+
+    return filteredOrders;
   }
 
   @ApiOperation({
@@ -144,7 +195,7 @@ export class OrderController {
     });
 
     if (result.error) {
-      throw new InternalServerErrorException(result.error.data.message);
+      throw new InternalServerErrorException(result.error.data);
     }
 
     return result.response;
