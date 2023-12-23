@@ -168,9 +168,9 @@ export class OrderController {
       throw new InternalServerErrorException(result.error.data);
     }
 
-    const transfromedOrders = this.orderService.transfromOrders(
-      result.response,
-    );
+    const validOrders = this.orderService.removeEmptyOrders(result.response);
+
+    const transfromedOrders = this.orderService.transfromOrders(validOrders);
 
     const filteredOrders = this.orderService.filterOrdersByRoles(
       transfromedOrders,
