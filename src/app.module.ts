@@ -22,13 +22,14 @@ import { WorkerRole } from './modules/workerRole/workerRole.model';
 import { WorkerModule } from './modules/worker/worker.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { OrderModule } from './modules/order/order.module';
+import { Stats } from './modules/stats/stats.model';
 
 const defaultConfig: SequelizeModuleOptions = {
   ...config().postgres,
   synchronize: true,
   autoLoadModels: true,
   // models
-  models: [Worker, WorkerAuth, WorkerRole],
+  models: [Worker, WorkerAuth, WorkerRole, Stats],
 };
 
 const mongoUri: string = config().mongo.uri;

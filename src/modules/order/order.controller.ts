@@ -7,6 +7,7 @@ import {
   Put,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { number } from 'joi';
@@ -19,11 +20,15 @@ import { RolesGuard } from '../auth/roles.guard';
 import { WorkerObject } from 'src/decorators/worker.decorator';
 import { OrderService } from './order.service';
 import { Worker } from '../worker/worker.model';
+import { StatsSercice } from '../stats/stats.service';
 
 @ApiTags('Order')
 @Controller('order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {}
+  constructor(
+    private readonly orderService: OrderService,
+    private readonly statsService: StatsSercice,
+  ) {}
 
   @ApiOperation({ summary: 'Creates order' })
   @ApiResponse({ status: 200, type: number })
@@ -158,7 +163,11 @@ export class OrderController {
   @ApiResponse({ status: 200, type: Number })
   @UseGuards(AuthGuard)
   @Get('/all')
-  async getAllOrders(@WorkerObject() worker: Worker) {
+  async getAllOrders(
+    @WorkerObject() worker: Worker,
+    @Query('dateFrom') dateFrom: string,
+    @Query('dateTo') dateTo: string,
+  ) {
     const result = await axiosRequest<any, any, Array<any>>({
       url: `/order/all`,
       method: RequestMethods.GET,
@@ -170,14 +179,29 @@ export class OrderController {
 
     const validOrders = this.orderService.removeEmptyOrders(result.response);
 
-    const transfromedOrders = this.orderService.transfromOrders(validOrders);
+    const filteredByDateOrders = this.orderService.filterOrdersByDate(
+      validOrders,
+      dateFrom,
+      dateTo,
+    );
+
+    const transfromedOrders =
+      this.orderService.transfromOrders(filteredByDateOrders);
 
     const filteredOrders = this.orderService.filterOrdersByRoles(
       transfromedOrders,
       worker.role.title,
     );
 
-    return filteredOrders;
+    const filteredByDateStats = await this.statsService.findAll(
+      dateFrom,
+      dateTo,
+    );
+
+    return {
+      orders: filteredOrders,
+      stats: filteredByDateStats,
+    };
   }
 
   @ApiOperation({

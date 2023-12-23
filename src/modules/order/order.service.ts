@@ -51,4 +51,20 @@ export class OrderService {
         return orders;
     }
   }
+
+  filterOrdersByDate(orders: Array<any>, dateFrom: string, dateTo: string) {
+    let filterCallback = ({ order: { created_at } }) => true;
+    if (dateFrom && dateTo) {
+      filterCallback = ({ order: { created_at } }) =>
+        created_at >= dateFrom &&
+        (created_at <= dateTo || created_at.startsWith(dateTo));
+    } else if (dateFrom) {
+      filterCallback = ({ order: { created_at } }) => created_at >= dateFrom;
+    } else if (dateTo) {
+      filterCallback = ({ order: { created_at } }) =>
+        created_at <= dateTo || created_at.startsWith(dateTo);
+    }
+
+    return orders.filter(filterCallback);
+  }
 }
