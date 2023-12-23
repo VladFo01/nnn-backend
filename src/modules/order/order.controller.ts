@@ -20,14 +20,14 @@ import { RolesGuard } from '../auth/roles.guard';
 import { WorkerObject } from 'src/decorators/worker.decorator';
 import { OrderService } from './order.service';
 import { Worker } from '../worker/worker.model';
-import { StatsSercice } from '../stats/stats.service';
+import { StatsService } from '../stats/stats.service';
 
 @ApiTags('Order')
 @Controller('order')
 export class OrderController {
   constructor(
     private readonly orderService: OrderService,
-    private readonly statsService: StatsSercice,
+    private readonly statsService: StatsService,
   ) {}
 
   @ApiOperation({ summary: 'Creates order' })
