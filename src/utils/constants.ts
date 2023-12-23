@@ -5,3 +5,10 @@ export const ROLES = {
   CHEF: 'Chef',
   WAITER: 'Waiter',
 };
+
+export const ORDER_STATUSES = {
+  not_confirmed: 'not_confirmed',
+  confirmed: 'confirmed',
+  cooked: 'cooked',
+  paid: 'paid',
+};
