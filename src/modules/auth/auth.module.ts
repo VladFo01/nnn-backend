@@ -4,7 +4,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 
 import config from '../../../config/config';
-import { TOKEN_EXPIRING_HOURS } from 'src/utils/constants';
+import { TOKEN_EXPIRING_HOURS } from '../../utils/constants';
 import { WorkerModule } from '../worker/worker.module';
 import { WorkerAuthModule } from '../workerAuth/workerAuth.module';
 import { ConfigModule } from '@nestjs/config';
