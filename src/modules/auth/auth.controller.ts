@@ -3,7 +3,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { LoginDto } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 import { AuthGuard } from './auth.guard';
-import { WorkerObject } from 'src/decorators/worker.decorator';
+import { WorkerObject } from '../../decorators/worker.decorator';
 import { Worker } from '../worker/worker.model';
 
 @ApiTags('Auth')

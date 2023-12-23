@@ -11,7 +11,7 @@ import { FeedbackService } from './feedback.service';
 import { CreateFeedbackDto } from './dto/create-feedback.dto';
 import { Feedback } from './schemas/feedback.schema';
 import { Roles } from '../auth/roles.decorator';
-import { ROLES } from 'src/utils/constants';
+import { ROLES } from '../../utils/constants';
 import { AuthGuard } from '../auth/auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -24,9 +24,10 @@ export class FeedbackController {
   @ApiOperation({ summary: 'Add feedback' })
   @ApiResponse({ status: 200 })
   @Post()
-  async create(@Body() createFeedbackDto: CreateFeedbackDto) {
-    console.log(createFeedbackDto);
-    await this.feedbackService.create(createFeedbackDto);
+  async create(
+    @Body() createFeedbackDto: CreateFeedbackDto,
+  ): Promise<Feedback> {
+    return this.feedbackService.create(createFeedbackDto);
   }
 
   @ApiOperation({ summary: 'Get all feedback' })

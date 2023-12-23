@@ -9,4 +9,6 @@ export class CreateFeedbackDto {
 
   @ApiProperty({ example: 5 })
   readonly rating: number;
+
+  readonly _id?: string;
 }

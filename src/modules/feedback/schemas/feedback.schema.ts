@@ -1,8 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ApiProperty } from '@nestjs/swagger';
-import { HydratedDocument } from 'mongoose';
+import { Document } from 'mongoose';
 
-export type FeedbackDocument = HydratedDocument<Feedback>;
+export type FeedbackDocument = Feedback & Document;
 
 @Schema()
 export class Feedback {

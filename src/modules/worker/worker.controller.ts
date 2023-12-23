@@ -15,7 +15,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Worker } from './worker.model';
 import { AuthGuard } from '../auth/auth.guard';
 import { Roles } from '../auth/roles.decorator';
-import { ROLES } from 'src/utils/constants';
+import { ROLES } from '../../utils/constants';
 import { RolesGuard } from '../auth/roles.guard';
 
 @ApiTags('Workers')
