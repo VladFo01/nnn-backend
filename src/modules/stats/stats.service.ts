@@ -4,7 +4,7 @@ import { Stats } from './stats.model';
 import { WhereOptions, Op, fn, col } from 'sequelize';
 
 @Injectable()
-export class StatsSercice {
+export class StatsService {
   constructor(@InjectModel(Stats) private statsModel: typeof Stats) {}
 
   async findAll(dateFrom: string, dateTo: string) {
